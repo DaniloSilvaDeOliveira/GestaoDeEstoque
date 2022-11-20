@@ -9,7 +9,9 @@
 </head>
 <body class="bg-secondary">
 <?php
+include_once("../controller/header.php");
 include_once("../model/produtos.php");
+
 
 if(         isset($_POST['NomeProduto']) 
             && isset($_POST['Preço'])
@@ -25,8 +27,7 @@ if(         isset($_POST['NomeProduto'])
     
 }
  
-?>
-<-- FAVOR COLAR O HEADER AQUI XD -->        
+?>    
 <center>
 <div class="bg-dark text-white p-5 pl-5 m-5 mx-m-auto" style="width: 490px; height: 450px;" >
     <form method="POST" action="estoqueADD.php" class="text-white form-group">
@@ -50,7 +51,8 @@ if(         isset($_POST['NomeProduto'])
                     <input name="Validade" type="date" class="form-input" placeholder=""> <br>
                 <br>
                 <br>
-                <input type="submit" value="Cadastrar">
+                <input type="submit" class="mb-1 btn btn-outline-light" value="Cadastrar"><br>
+                <a class="text-muted" href="estoque.php">Voltar Para o Estoque</a>
         </fieldset>
     </form>
 </div>

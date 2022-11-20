@@ -10,13 +10,33 @@
 <body class="bg-secondary">
 <?php
     session_start();
+    if($_SESSION){
+        header('Location: ../view/estoque.php');
+    }
+
     if(isset($_POST['usuario']) && isset($_POST['senha'])){
-        session_start();
         $usuario = $_POST['usuario'];
-        $senha = $_POST['senha'];
-        include_once("../model/usuario.php");
-        $Usuario_Obj = new Usuário;
-        $LoginError = $Usuario_Obj->Login($usuario,$senha);
+        $senha = $_POST['senha'];    
+
+        try{
+            $pdo = new PDO('mysql:host=localhost;dbname=beaverbox','root', '');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $query = $pdo->prepare("SELECT * FROM usuários WHERE Nome =:usuario AND Senha =:senha");
+            $query->bindParam(":usuario",$usuario,PDO::PARAM_STR);
+            $query->bindParam(":senha",$senha,PDO::PARAM_STR);
+            $query->execute();
+            $row = $query->fetch(PDO::FETCH_ASSOC);
+            if($row['Nome'] == $usuario && $row['Senha'] == $senha){
+                $_SESSION['login'] = $usuario;    
+                header('Location: ../view/estoque.php');
+            }else{
+                return $LoginError = true;
+            }
+            
+        } catch(PDOException $e){
+            die("ERROR: Não foi possível conectar. " . $e->getMessage());
+            
+        }
 
     }
 ?>
