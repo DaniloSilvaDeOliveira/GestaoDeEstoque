@@ -48,7 +48,11 @@
                         <td>Editar</td>
                     </tr>
                         <?php
+                        if(isset($_POST['Pesquisar']) && $_POST['nomePesquisar'] != ""){
+                            $BD->ProcurarProdutos($_POST['nomePesquisar']);
+                        }else{
                             $BD->MostrarProdutos();
+                        }   
                         ?>
                 </table>
             </div>

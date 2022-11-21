@@ -15,9 +15,10 @@
     }
 
     if(isset($_POST['usuario']) && isset($_POST['senha'])){
+        include_once("../model/usuario.php");
+        $user = new Usuário;
         $usuario = $_POST['usuario'];
         $senha = $_POST['senha'];    
-
         try{
             $pdo = new PDO('mysql:host=localhost;dbname=beaverbox','root', '');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -26,11 +27,13 @@
             $query->bindParam(":senha",$senha,PDO::PARAM_STR);
             $query->execute();
             $row = $query->fetch(PDO::FETCH_ASSOC);
-            if($row['Nome'] == $usuario && $row['Senha'] == $senha){
-                $_SESSION['login'] = $usuario;    
-                header('Location: ../view/estoque.php');
+            if($row){
+                if($row['Nome'] == $usuario && $row['Senha'] == $senha){
+                    $_SESSION['login'] = $usuario;    
+                    header('Location: ../view/estoque.php');
+                }
             }else{
-                return $LoginError = true;
+                $LoginError = true;
             }
             
         } catch(PDOException $e){

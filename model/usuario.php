@@ -10,10 +10,6 @@
             return $this->nome;
         }
 
-        function Login($usuario,$senha){
-         
-        }
-
         function LogOff(){
             session_start();
             session_destroy();

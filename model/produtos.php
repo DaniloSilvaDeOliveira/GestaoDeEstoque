@@ -154,5 +154,29 @@
             
         }
     }
+    
+    function ProcurarProdutos($nome){
+        try{
+            $pdo = new PDO('mysql:host=localhost;dbname=beaverbox','root', '');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $query = $pdo->prepare("SELECT * FROM produtos WHERE `Nome do Produto` LIKE '%$nome%';");
+            $query->execute();
+            $rowSQL = $query->fetchAll(PDO::FETCH_ASSOC);
+            foreach($rowSQL as $row){
+
+                echo '<tr>
+                <td>'.$row['idProdutos'].'</td>
+                <td>'.$row['Nome do Produto'].'</td>
+                <td>'.$row['Preço'].'</td>
+                <td>'.$row['Quantidade'].'</td>
+                <td>'.$this->FormataData($row['Validade']).'</td>
+                <td><input onclick="displayDiv('.$row['idProdutos'].')" class="form-check-input" type="checkbox"></td>
+                </tr>';
+            }
+        } catch(PDOException $e){
+            die("" . $e->getMessage());
+            
+        }
+    }
 }
 ?>
